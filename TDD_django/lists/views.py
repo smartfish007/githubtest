@@ -1,9 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from lists.models import Item
 def home_page(request):
-    data={}
     if request.POST:
-        data["new_item_text"]=request.POST['item_text']
-    return render(request,'home.html',data)
+        Item.objects.create(text=request.POST['item_text'])#objects创建一个简化的Item对象，无需调用save
+        return redirect('/')
+    items=Item.objects.all()
+    return render(request,'home.html',{'items':items})
 
 # Create your views here.

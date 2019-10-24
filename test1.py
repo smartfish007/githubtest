@@ -17,11 +17,17 @@ class Myunittest(unittest.TestCase):
          input.get_attribute('placeholder'),#获取属性里的值
          'Enter a to-do item'
       )
-      input.send_keys('Buy')#填入文本框
+      input.send_keys('Buy1')#填入文本框
       input.send_keys(Keys.ENTER)#回车
       time.sleep(1)
-      table=self.browser.find_element_by_xpath('//*[@id="id_list_table"]/tbody/tr/td[1]')
-      self.assertEqual(table.text,'Buy')
+      input = self.browser.find_element_by_id("id_new_item")
+      input.send_keys('Buy2')  # 填入文本框
+      input.send_keys(Keys.ENTER)  # 回车
+      time.sleep(1)
+      table=self.browser.find_element_by_id('id_list_table')
+      rows=table.find_elements_by_tag_name('tr')
+      self.assertIn('16:Buy1',[row.text for row in rows])
+      self.assertIn('17:Buy2', [row.text for row in rows])
       self.fail("Finish test")#提前结束测试
 if __name__=='__main__':
    unittest.main(warnings='ignore')#启动unittest测试程序
