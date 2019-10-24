@@ -9,6 +9,9 @@ class HomepageTest(TestCase):
         self.assertEqual(found.func, home_page)  # 看看是否能找到名为home_page的函数
     def test_home_page_returns_correct_html(self):
         respose=self.client.get('/')
-        html=respose.content.decode('utf8')
-        self.assertTemplateNotUsed(respose,'home.html')#检测响应是用哪个模板渲染的
+        self.assertTemplateUsed(respose,'home.html')#检测响应是用哪个模板渲染的
+    def test_can_save_a_POST_request(self):#测试post请求响应,是否返回文本框的数据
+        response=self.client.post('/',data={'item_text':'A new list item'})
+        self.assertIn('A new list item',response.content.decode())
+        self.assertTemplateUsed(response, 'home.html')  # 检测响应是否同一个模板渲染的
 # Create your tests here.
